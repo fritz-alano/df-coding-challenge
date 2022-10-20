@@ -1,1 +1,69 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, sans-serif;
+}
+
+.page-header {
+    margin-top: 0;
+    padding: 18px;
+    background-color: #2f4c3c;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.button-primary,
+.button-secondary {
+    color: #fff;
+    padding: 6px 42px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 12px;
+    border-style: none;
+}
+
+.button-primary {
+    background-color: #14525e;
+}
+
+.button-secondary {
+    background-color: #bd5b5f;
+}
+
+.form-field {
+    text-align: center;
+}
+
+.form-field label {
+    margin-right: 16px;
+    color: #134a2cd9;
+}
+
+.form-field .mb-3 {
+    margin: 8px 0;
+}
+
+.form-field .invalid-feedback {
+    margin: 3px;
+}
+
+.form-field formly-validation-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    padding: 2px 12px;
+    font-size: 14px;
+}

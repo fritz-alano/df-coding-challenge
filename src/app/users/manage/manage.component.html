@@ -1,0 +1,12 @@
+<h1 *ngIf="header" class="page-header">{{ header }}</h1>
+<div>
+    <form [formGroup]="form">
+        <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+
+        <div class="buttons-group">
+            <button class="button-add button-primary" (click)="onBack()">Back</button>
+            <button *ngIf="this.model?.id" class="button-add button-secondary" (click)="onDelete()">Delete</button>
+            <button class="button-add button-primary" (click)="onSubmit()">Save</button>
+        </div>
+    </form>
+</div>

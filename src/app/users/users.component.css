@@ -1,0 +1,23 @@
+.button-add {
+    display: block;
+    margin: 0 0 16px 16px;
+}
+
+table {
+    width: 100%;
+    border: solid 1px #2f4c3c;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    text-align: center;
+    padding: 10px;
+    border: solid 1px #2f4c3c;
+}
+
+thead th {
+    background-color: #2f4c3c;
+    color: #fff;
+    font-weight: 400;
+}

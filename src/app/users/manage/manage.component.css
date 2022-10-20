@@ -1,0 +1,9 @@
+.buttons-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.buttons-group button {
+    margin: 16px 4px;
+}

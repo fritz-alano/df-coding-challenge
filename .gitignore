@@ -44,3 +44,4 @@ Thumbs.db
 #BE
 api/.vs/*
 api/api/obj/*
+api/api/bin/*

@@ -1,12 +1,17 @@
 using api.DAL;
 using api.DAL.Interfaces;
+using api.ViewModels;
+using FluentValidation;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// Add repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+// Add validators
+builder.Services.AddScoped<IValidator<UserModel>, UserModelValidator>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

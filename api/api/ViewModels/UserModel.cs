@@ -1,3 +1,6 @@
+using FluentValidation;
+using System;
+
 namespace api.ViewModels
 {
   public class UserModel
@@ -9,5 +12,15 @@ namespace api.ViewModels
     public string LastName { get; set; }
 
     public string Email { get; set; }
+  }
+
+  public class UserModelValidator : AbstractValidator<UserModel>
+  {
+    public UserModelValidator()
+    {
+      RuleFor(x => x.FirstName).Length(1, 30);
+      RuleFor(x => x.LastName).Length(1, 30);
+      RuleFor(x => x.Email).EmailAddress();
+    }
   }
 }

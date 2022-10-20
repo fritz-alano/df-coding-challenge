@@ -1,5 +1,7 @@
 using api.DAL.Interfaces;
 using api.ViewModels;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -9,10 +11,12 @@ namespace api.Controllers
   public class UserController : ControllerBase
   {
     readonly IUserRepository _userRepository;
+    private IValidator<UserModel> _validator;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(IUserRepository userRepository, IValidator<UserModel> validator)
     {
       _userRepository = userRepository;
+      _validator = validator;
     }
 
     [HttpGet]
@@ -25,16 +29,28 @@ namespace api.Controllers
 
     [HttpPost]
     [Route("add")]
-    public void Post([FromBody] UserModel user)
+    public ActionResult Post([FromBody] UserModel user)
     {
+      ValidationResult result = _validator.Validate(user);
+
+      if (!result.IsValid)
+        return BadRequest("Invalid request");
+
       _userRepository.AddUser(user);
+      return Ok();
     }
 
     [HttpPost]
     [Route("edit")]
-    public void Edit([FromBody] UserModel user)
+    public ActionResult Edit([FromBody] UserModel user)
     {
+      ValidationResult result = _validator.Validate(user);
+
+      if (!result.IsValid)
+        return BadRequest("Invalid request");
+
       _userRepository.EditUser(user);
+      return Ok();
     }
 
     [HttpDelete("{id}")]

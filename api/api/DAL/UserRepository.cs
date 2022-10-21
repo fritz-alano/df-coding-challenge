@@ -7,22 +7,6 @@ namespace api.DAL
 {
   public class UserRepository : IUserRepository
   {
-    public UserRepository()
-    {
-      // insert 1 user data 
-      using var context = new ApiContext();
-      if (!context.Users.Any())
-      {
-        context.Add(new User
-        {
-          FirstName = "admin",
-          LastName = "-",
-          Email = "admin@noreply.com"
-        });
-        context.SaveChanges();
-      }
-    }
-
     public Task<List<User>> GetUsers()
     {
       using var context = new ApiContext();

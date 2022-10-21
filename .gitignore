@@ -45,3 +45,7 @@ Thumbs.db
 api/.vs/*
 api/api/obj/*
 api/api/bin/*
+
+#BE
+api/api.UnitTests/obj/*
+api/api.UnitTests/bin/*

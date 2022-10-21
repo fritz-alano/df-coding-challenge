@@ -23,35 +23,46 @@ public class ProjectRepository : IProjectRepository
     }
   }
 
-  public List<Project> GetProjects()
+  public Task<List<Project>> GetProjects()
   {
     using var context = new ApiContext();
-    return (context.Projects
+    return context.Projects
       .Include(x => x.Users)
-      .ToList());
+      .ToListAsync();
   }
 
-  public void AddUser(int projectId, int userId)
+  public Task<Project?> GetProject(int projectId)
+  {
+    using var context = new ApiContext();
+    return context.Projects
+      .Where(x => x.Id == projectId)
+      .Include(x => x.Users)
+      .FirstOrDefaultAsync();
+  }
+
+
+  public Task AddUser(int projectId, User user)
   {
     using var context = new ApiContext();
     var project = context.Projects
         .Include(x => x.Users)
-        .Where(x => x.Id == projectId).FirstOrDefault();
-    var user = context.Users.Where(x => x.Id == userId).FirstOrDefault();
+        .Where(x => x.Id == projectId)
+        .First();
 
     project.Users.Add(user);
-    context.SaveChanges();
+    return context.SaveChangesAsync();
   }
 
-  public void RemoveUser(int projectId, int userId)
+  public Task RemoveUser(int projectId, User user)
   {
     using var context = new ApiContext();
     var project = context.Projects
         .Include(x => x.Users)
-        .Where(x => x.Id == projectId).FirstOrDefault();
-    var user = context.Users.Where(x => x.Id == userId).FirstOrDefault();
+        .Where(x => x.Id == projectId)
+        .First();
 
-    project.Users.Remove(user);
-    context.SaveChanges();
+    var el = project.Users.Where(x => x.Id == user.Id).First();
+    project.Users.Remove(el);
+    return context.SaveChangesAsync();
   }
 }

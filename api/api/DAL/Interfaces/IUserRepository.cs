@@ -5,12 +5,14 @@ namespace api.DAL.Interfaces
 {
   public interface IUserRepository
   {
-    public List<User> GetUsers();
+    public Task<List<User>> GetUsers();
 
-    public void AddUser(UserModel userModel);
+    public Task<User?> GetUser(int userId);
 
-    public void EditUser(UserModel userModel);
+    public Task AddUser(UserModel userModel);
 
-    public void DeleteUser(int id);
+    public Task EditUser(UserModel userModel);
+
+    public Task DeleteUser(int id);
   }
 }

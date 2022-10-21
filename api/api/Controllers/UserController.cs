@@ -10,8 +10,8 @@ namespace api.Controllers
   [ApiController]
   public class UserController : ControllerBase
   {
-    readonly IUserRepository _userRepository;
-    private IValidator<UserModel> _validator;
+    private readonly IUserRepository _userRepository;
+    private readonly IValidator<UserModel> _validator;
 
     public UserController(IUserRepository userRepository, IValidator<UserModel> validator)
     {
@@ -21,42 +21,54 @@ namespace api.Controllers
 
     [HttpGet]
     [Route("get")]
-    public ActionResult<List<UserModel>> Get()
+    public async Task<IActionResult> GetUsers()
     {
-      var users = _userRepository.GetUsers();
+      var users = await _userRepository.GetUsers();
       return Ok(users);
     }
 
     [HttpPost]
     [Route("add")]
-    public ActionResult Post([FromBody] UserModel user)
+    public async Task<IActionResult> AddUser([FromBody] UserModel user)
     {
       ValidationResult result = _validator.Validate(user);
 
       if (!result.IsValid)
         return BadRequest("Invalid request");
 
-      _userRepository.AddUser(user);
+      await _userRepository.AddUser(user);
       return Ok();
     }
 
     [HttpPost]
     [Route("edit")]
-    public ActionResult Edit([FromBody] UserModel user)
+    public async Task<IActionResult> EditUser([FromBody] UserModel userModel)
     {
-      ValidationResult result = _validator.Validate(user);
+      ValidationResult result = _validator.Validate(userModel);
 
       if (!result.IsValid)
         return BadRequest("Invalid request");
 
-      _userRepository.EditUser(user);
+      var user = await _userRepository.GetUser(userModel.Id);
+      if (user == null)
+        return NotFound();
+
+      await _userRepository.EditUser(userModel);
       return Ok();
     }
 
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public async Task<IActionResult> DeleteUser(int id)
     {
-      _userRepository.DeleteUser(id);
+      if (id == 0)
+        return NotFound();
+
+      var user = await _userRepository.GetUser(id);
+      if (user == null)
+        return NotFound();
+
+      await _userRepository.DeleteUser(id);
+      return Ok();
     }
   }
 }

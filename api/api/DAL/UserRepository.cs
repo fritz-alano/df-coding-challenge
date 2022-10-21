@@ -1,6 +1,7 @@
 using api.DAL.Interfaces;
 using api.DBModels;
 using api.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.DAL
 {
@@ -21,15 +22,23 @@ namespace api.DAL
         context.SaveChanges();
       }
     }
-    public List<User> GetUsers()
+
+    public Task<List<User>> GetUsers()
     {
       using var context = new ApiContext();
-      var list = context.Users
-          .ToList();
-      return list;
+      return context.Users
+        .ToListAsync();
     }
 
-    public void AddUser(UserModel userModel)
+    public Task<User?> GetUser(int userId)
+    {
+      using var context = new ApiContext();
+      return context.Users
+        .Where(x => x.Id == userId)
+        .FirstOrDefaultAsync();
+    }
+
+    public Task AddUser(UserModel userModel)
     {
       using var context = new ApiContext();
       context.Add(new User
@@ -38,28 +47,29 @@ namespace api.DAL
         LastName = userModel.LastName,
         Email = userModel.Email
       });
-
-      context.SaveChanges();
+      return context.SaveChangesAsync();
     }
 
-    public void EditUser(UserModel userModel)
+    public Task EditUser(UserModel userModel)
     {
       using var context = new ApiContext();
-      var user = context.Users.Where(x => x.Id == userModel.Id)
-        .FirstOrDefault();
+      var user = context.Users
+        .Where(x => x.Id == userModel.Id)
+        .First();
       user.FirstName = userModel.FirstName;
       user.LastName = userModel.LastName;
       user.Email = userModel.Email;
-
-      context.SaveChanges();
+      return context.SaveChangesAsync();
     }
 
-    public void DeleteUser(int id)
+    public Task DeleteUser(int id)
     {
       using var context = new ApiContext();
-      var user = context.Users.Where(x => x.Id == id).FirstOrDefault();
+      var user = context.Users
+        .Where(x => x.Id == id)
+        .First();
       context.Users.Remove(user);
-      context.SaveChanges();
+      return context.SaveChangesAsync();
     }
   }
 }
